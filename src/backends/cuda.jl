@@ -205,6 +205,10 @@ for f in cudafuns
     end
 end
 
+@inline Cassette.overdub(::CUDACtx, ::typeof(+), a::T, b::T) where T<:Union{Float32, Float64} = add_float_contract(a, b)
+@inline Cassette.overdub(::CUDACtx, ::typeof(-), a::T, b::T) where T<:Union{Float32, Float64} = sub_float_contract(a, b)
+@inline Cassette.overdub(::CUDACtx, ::typeof(*), a::T, b::T) where T<:Union{Float32, Float64} = mul_float_contract(a, b)
+
 
 ###
 # GPU implementation of shared memory

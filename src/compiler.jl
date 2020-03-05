@@ -42,10 +42,6 @@ function generate_overdubs(Ctx)
         @inline Cassette.overdub(::$Ctx, ::typeof(Core.apply_type), args...) = return Core.apply_type(args...)
         @inline Cassette.overdub(::$Ctx, ::typeof(StaticArrays.Size), x::Type{<:AbstractArray{<:Any, N}}) where {N} = return StaticArrays.Size(x)
 
-        @inline Cassette.overdub(::$Ctx, ::typeof(+), a::T, b::T) where T<:Union{Float32, Float64} = add_float_contract(a, b)
-        @inline Cassette.overdub(::$Ctx, ::typeof(-), a::T, b::T) where T<:Union{Float32, Float64} = sub_float_contract(a, b)
-        @inline Cassette.overdub(::$Ctx, ::typeof(*), a::T, b::T) where T<:Union{Float32, Float64} = mul_float_contract(a, b)
-
         function Cassette.overdub(::$Ctx, ::typeof(:), start::T, step::T, stop::T) where T<:Union{Float16,Float32,Float64}
             lf = (stop-start)/step
             if lf < 0
